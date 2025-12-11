@@ -1,25 +1,8 @@
 # 🚀 Asistencia JCCM Tracker
 
-![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-2.0-black?style=for-the-badge&logo=flask&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![Selenium](https://img.shields.io/badge/Selenium-Scraping-43B02A?style=for-the-badge&logo=selenium&logoColor=white)
-
 > **Automatización inteligente para el control de faltas en EducamosCLM / Papás 2.0**
 
-Una aplicación **Full Stack** dockerizada que monitoriza automáticamente tu asistencia escolar. Realiza web scraping periódico al portal educativo, almacena los datos en PostgreSQL y ofrece un Dashboard visual con **Glassmorphism UI** para saber exactamente cuánto margen de faltas te queda antes de perder la evaluación continua.
-
----
-
-## 📸 Capturas de Pantalla
-
-| **Login Seguro** | **Dashboard & Métricas** |
-|:---:|:---:|
-| ![Login Screen](./capturas/login_preview.png) | ![Dashboard](./capturas/dashboard_preview.png) |
-| *Acceso protegido con contraseña maestra* | *Visualización de progreso y alertas al 25%* |
-
----
+****Full Stack** dockerizada que monitoriza automáticamente tu asistencia escolar. Realiza web scraping periódico al portal educativo, almacena los datos en PostgreSQL y ofrece un Dashboard visual con **Glassmorphism UI** para saber exactamente cuánto margen de faltas te queda antes de perder la evaluación continua.**
 
 ## ⚡ Características Principales
 
@@ -47,40 +30,51 @@ Este proyecto ha sido diseñado siguiendo el patrón **MVC** (Modelo-Vista-Contr
 ## 🚀 Instalación y Despliegue
 
 ### Requisitos previos
+
 * Docker y Docker Compose instalados.
 * Una cuenta activa en Papás 2.0 / EducamosCLM.
 
 ### 1. Clonar el repositorio
+
 bash
 git clone [https://github.com/tu-usuario/asistencia-jccm-tracker.git](https://github.com/tu-usuario/asistencia-jccm-tracker.git)
 cd asistencia-jccm-tracker
 
-2. Configurar Variables de Entorno
+### 2.Configurar Variables de Entorno
+
 Crea un archivo .env en la raíz y rellénalo con tus datos:
 
-Fragmento de código
+FragmConfigurar Variables de Entornoento de código
 
-# Base de Datos
+```Base
+
 DB_USER=admin
 DB_PASS=tu_contrasena_db
 DB_NAME=asistencia_db
 
 # Seguridad Web
+
 APP_PASSWORD=tu_contrasena_maestra
 
 # Credenciales Instituto (Para el robot)
+
 JCCM_USER=tu_usuario_papas
 JCCM_PASS=tu_contrasena_papas
-3. Levantar la Infraestructura
-Bash
 
+```
+
+### 3. Levantar la Infraestructura
+```
 docker-compose up -d --build
-4. Inicializar Datos Maestros (Seed)
+```
+
+### 4. Inicializar Datos Maestros (Seed)
+
 Carga las asignaturas y horas totales del curso para calcular los porcentajes:
-
-Bash
-
+```
 docker exec -it asistencia-app-web-1 python seed.py
+```
+
 🎉 ¡Listo! Accede a tu panel en: http://localhost:5000
 
 📂 Estructura del Proyecto
@@ -98,6 +92,8 @@ asistencia-app/
     └── templates/          # Vistas (HTML + Jinja2)
         ├── login.html
         └── dashboard.html
+
+
 💡 Funcionamiento del "Semáforo" de Faltas
 El sistema calcula el porcentaje de asistencia perdida sobre el total de horas del módulo:
 
@@ -108,4 +104,4 @@ El sistema calcula el porcentaje de asistencia perdida sobre el total de horas d
 🔴 > 85% del límite: ¡Peligro Crítico! (Riesgo de pérdida de evaluación).
 
 👤 Autor
-Desarrollado con ❤️ y mucho café por [Tu Nombre]. Estudiante de DAM - Desarrollo de Aplicaciones Multiplataforma.
+Desarrollado con ❤️ y mucho café por Eros Pacheco. Estudiante de DAM - Desarrollo de Aplicaciones Multiplataforma.
