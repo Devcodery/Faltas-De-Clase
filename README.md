@@ -77,22 +77,6 @@ docker exec -it asistencia-app-web-1 python seed.py
 
 🎉 ¡Listo! Accede a tu panel en: http://localhost:5000
 
-📂 Estructura del Proyecto
-Plaintext
-
-asistencia-app/
-├── docker-compose.yml      # Orquestación de servicios
-├── .env                    # Secretos (NO SUBIR A GITHUB)
-└── web/
-    ├── Dockerfile          # Imagen de Python + Chrome
-    ├── app.py              # Controlador principal (Flask)
-    ├── scraper.py          # Lógica de extracción de datos
-    ├── seed.py             # Semilla de datos iniciales
-    ├── requirements.txt    # Dependencias
-    └── templates/          # Vistas (HTML + Jinja2)
-        ├── login.html
-        └── dashboard.html
-
 
 💡 Funcionamiento del "Semáforo" de Faltas
 El sistema calcula el porcentaje de asistencia perdida sobre el total de horas del módulo:
