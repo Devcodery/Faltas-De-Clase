@@ -104,6 +104,67 @@
 
         </div>
 
+        <div class="row mb-4">
+            
+            <div class="col-md-4">
+                <div class="card card-stat p-3 mb-2 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-3">
+                            <i class="fas fa-chart-pie fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-0 small text-uppercase fw-bold">Faltas Totales</h6>
+                            <h3 class="fw-bold mb-0">
+                                {# Suma TOTAL de todas las asignaturas #}
+                                {{ asignaturas | map(attribute='horas_llevo') | sum }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-stat p-3 mb-2 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle me-3">
+                            <i class="fas fa-seedling fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-0 small text-uppercase fw-bold">Primero DAM</h6>
+                            <div class="d-flex align-items-baseline">
+                                <h3 class="fw-bold mb-0 me-2">
+                                    {# Filtra por curso 1 -> Saca las horas -> Las suma #}
+                                    {{ asignaturas | selectattr("curso", "equalto", 1) | map(attribute='horas_llevo') | sum }}
+                                </h3>
+                                <span class="text-muted small">faltas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card card-stat p-3 mb-2 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle me-3">
+                            <i class="fas fa-laptop-code fa-lg"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-0 small text-uppercase fw-bold">Segundo DAM</h6>
+                            <div class="d-flex align-items-baseline">
+                                <h3 class="fw-bold mb-0 me-2">
+                                    {# Filtra por curso 2 -> Saca las horas -> Las suma #}
+                                    {{ asignaturas | selectattr("curso", "equalto", 2) | map(attribute='horas_llevo') | sum }}
+                                </h3>
+                                <span class="text-muted small">faltas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="table-container">
             <h5 class="mb-4 fw-bold text-secondary">Desglose por Asignatura</h5>
             <div class="table-responsive">
