@@ -1,40 +1,36 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
-from scraper import actualizar_datos_desde_web # Importaremos tu scraper
 
 app = Flask(__name__)
-app.secret_key = 'clave_super_secreta_para_cookies' # Cambia esto
+app.secret_key = 'tu_secreto_aqui'  # Cambia esto por un secreto seguro
 
 # Configuración DB
-# Si no encuentra la variable (porque estás en local), usa la de fallback
 uri = os.getenv('DATABASE_URL')
 if not uri:
-    # OJO: Aquí asumo que usaste el puerto 5433 o 5432. 
-    # Si seguiste mi consejo de cambiar el puerto en docker-compose, usa 5433.
+    # Fallback para local si no usas Docker
     uri = 'postgresql://admin:secreto123@localhost:5433/asistencia_db'
-
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-# --- MODELO DE LA BASE DE DATOS ---
+# --- MODELO ---
 class Asignatura(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), unique=True, nullable=False)
     horas_totales = db.Column(db.Integer)
-    horas_limite = db.Column(db.Integer) # El 25%
+    horas_limite = db.Column(db.Float)
     horas_llevo = db.Column(db.Integer, default=0)
+    curso = db.Column(db.Integer, nullable=False, default=1)
 
     @property
     def horas_restantes(self):
         return self.horas_limite - self.horas_llevo
 
-# Crear tablas si no existen al iniciar
+# Crear tablas
 with app.app_context():
     db.create_all()
-    # Aquí podríamos crear las asignaturas iniciales si está vacío
 
 # --- RUTAS ---
 
@@ -43,15 +39,13 @@ def index():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     
-    # Obtenemos datos de la DB ordenados
-    asignaturas = Asignatura.query.order_by(Asignatura.nombre).all()
+    asignaturas = Asignatura.query.order_by(Asignatura.curso, Asignatura.nombre).all()
     return render_template('dashboard.html', asignaturas=asignaturas)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        # Verificamos contra la variable de entorno
         if request.form['password'] == os.getenv('APP_PASSWORD'):
             session['logged_in'] = True
             return redirect(url_for('index'))
@@ -64,17 +58,28 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
-@app.route('/actualizar')
-def actualizar():
+# --- NUEVAS RUTAS MANUALES ---
+
+@app.route('/sumar/<int:id>')
+def sumar(id):
     if not session.get('logged_in'): return redirect(url_for('login'))
     
-    # Llamamos a tu scraper
-    try:
-        # Pasamos la instancia 'db' y la clase 'Asignatura' al scraper para que guarde
-        actualizar_datos_desde_web(db, Asignatura)
-        mensaje = "Datos actualizados correctamente"
-    except Exception as e:
-        mensaje = f"Error al actualizar: {e}"
+    # Buscamos la asignatura por ID
+    asig = Asignatura.query.get(id)
+    if asig:
+        asig.horas_llevo += 1 # Sumamos 1 falta
+        db.session.commit()
+        
+    return redirect(url_for('index'))
+
+@app.route('/restar/<int:id>')
+def restar(id):
+    if not session.get('logged_in'): return redirect(url_for('login'))
+    
+    asig = Asignatura.query.get(id)
+    if asig and asig.horas_llevo > 0: # Evitamos números negativos
+        asig.horas_llevo -= 1
+        db.session.commit()
         
     return redirect(url_for('index'))
 
