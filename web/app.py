@@ -3,7 +3,7 @@ import time
 import requests
 from functools import wraps
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify, g
+from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify, g, send_from_directory
 from dotenv import load_dotenv
 from models import db, User, Estudio, Asignatura
 
@@ -126,6 +126,11 @@ def index():
             return redirect(url_for('admin_dashboard'))
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/login', methods=['GET', 'POST'])
