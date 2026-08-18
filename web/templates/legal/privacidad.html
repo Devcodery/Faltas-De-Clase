@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Política de Privacidad{% endblock %}
+
+{% block content %}
+<div class="container pb-5">
+    <div class="card card-stat p-4 p-md-5">
+        <div class="mb-4 pb-3 border-bottom">
+            <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">Legal RGPD (UE 2016/679)</span>
+            <h1 class="fw-bold text-dark">Política de Privacidad</h1>
+            <p class="text-muted small mb-0">Última actualización: {{ current_year }}</p>
+        </div>
+
+        <div class="legal-content lh-lg text-secondary">
+            <h4 class="fw-bold text-dark mt-4">1. Responsable del Tratamiento</h4>
+            <p>
+                En cumplimiento del Reglamento General de Protección de Datos (RGPD UE 2016/679) y la Ley Orgánica 3/2018 (LOPDGDD), se informa a los usuarios de que los datos personales recabados a través de esta aplicación serán tratados por:
+            </p>
+            <ul>
+                <li><strong>Titular / Responsable:</strong> [NOMBRE / RAZÓN SOCIAL DEL TITULAR]</li>
+                <li><strong>NIF/CIF:</strong> [NIF/CIF DEL TITULAR]</li>
+                <li><strong>Correo de Contacto:</strong> [EMAIL DE CONTACTO DE PRIVACIDAD]</li>
+                <li><strong>Finalidad Principal:</strong> Gestión de usuarios y control de asistencia y faltas lectivas.</li>
+            </ul>
+
+            <h4 class="fw-bold text-dark mt-4">2. Integración con Google OAuth 2.0 (Cláusula Específica)</h4>
+            <div class="alert alert-info border-0 rounded-3 p-3">
+                <i class="fas fa-info-circle me-2"></i> <strong>Tratamiento de Datos vía Google Sign-In:</strong>
+                Cuando el usuario opta por registrarse o iniciar sesión mediante el servicio de autenticación de terceros de Google (Google OAuth 2.0 / Google Identity Services), nuestra aplicación recopila de manera automatizada los siguientes datos suministrados por su perfil de Google:
+                <ul class="mb-1 mt-2">
+                    <li>Dirección de correo electrónico asociada a la cuenta de Google.</li>
+                    <li>Nombre y apellidos (o nombre de perfil público).</li>
+                    <li>Identificador único de usuario de Google (Google Sub ID).</li>
+                    <li>Fotografía o avatar de perfil (opcional).</li>
+                </ul>
+            </div>
+            <p>
+                <strong>Finalidad exclusiva:</strong> Estos datos se utilizan con la única finalidad de verificar la identidad del usuario, crear su cuenta de acceso individual y mantener su sesión segura sin requerir el almacenamiento de contraseñas de terceros en nuestros servidores. En ningún caso solicitamos permisos para acceder a tus archivos de Google Drive, contactos, correos electrónicos ni otros servicios ajenos a la identificación básica.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">3. Tratamiento de Datos Académicos y Horarios Escolares</h4>
+            <p>
+                Los datos relativos a los estudios cursados (nombre del ciclo/carrera, duración, asignaturas, cómputo de horas totales y registro de faltas de asistencia) son introducidos voluntariamente por el usuario para su exclusiva organización y control personal.
+            </p>
+            <p>
+                La plataforma trata estos registros con estricta confidencialidad y no los comunica, cede ni comercializa con ningún centro educativo, institución académica ni tercero comercial.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">4. Base Jurídica del Tratamiento</h4>
+            <p>
+                La base legal para el tratamiento de sus datos es el <strong>consentimiento expreso</strong> del interesado (Artículo 6.1.a del RGPD), otorgado de forma afirmativa al marcar la casilla de aceptación obligatoria antes de iniciar sesión o registrarse, así como la ejecución de las funcionalidades de la aplicación solicitadas por el propio usuario (Artículo 6.1.b del RGPD).
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">5. Conservación de los Datos</h4>
+            <p>
+                Los datos se conservarán mientras el usuario mantenga activa su cuenta en el sistema. El usuario puede solicitar la eliminación total de su cuenta y sus datos académicos en cualquier momento a través del panel de usuario o comunicándose con el administrador.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">6. Ejercicio de Derechos (ARCO / RGPD)</h4>
+            <p>
+                Cualquier usuario tiene derecho a ejercer sus derechos de:
+            </p>
+            <ul>
+                <li><strong>Acceso:</strong> Conocer qué datos personales suyos están siendo tratados.</li>
+                <li><strong>Rectificación:</strong> Modificar los datos inexactos o incompletos.</li>
+                <li><strong>Supresión (Derecho al olvido):</strong> Solicitar la eliminación total de sus datos.</li>
+                <li><strong>Limitación del tratamiento y Portabilidad:</strong> Solicitar la portabilidad de sus registros de asignaturas en formato estructurado.</li>
+                <li><strong>Oposición:</strong> Oponerse al tratamiento de sus datos.</li>
+            </ul>
+            <p>
+                Para ejercer cualquiera de estos derechos, el usuario puede enviar un correo electrónico a <code>[EMAIL DE CONTACTO DE PRIVACIDAD]</code> adjuntando copia de su documento de identidad o identificándose desde su cuenta registrada.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">7. Medidas de Seguridad</h4>
+            <p>
+                Se implementan medidas de seguridad técnicas y organizativas adecuadas, tales como cifrado HTTPS en tránsito, almacenamiento de contraseñas mediante funciones criptográficas unidireccionales (hashing seguro) y aislamiento de registros por usuario.
+            </p>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+            <a href="{{ url_for('login') }}" class="btn btn-primary rounded-pill px-4">Volver al Acceso</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

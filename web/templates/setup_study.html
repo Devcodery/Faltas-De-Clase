@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Configurar Plan de Estudios{% endblock %}
+
+{% block extra_css %}
+<style>
+    .setup-card {
+        max-width: 650px;
+        margin: 30px auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        padding: 35px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="setup-card">
+    <div class="text-center mb-4">
+        <div class="bg-primary bg-opacity-10 text-primary d-inline-flex p-3 rounded-circle mb-3">
+            <i class="fas fa-book-reader fa-2x"></i>
+        </div>
+        <h3 class="fw-bold mb-1">{% if estudio %}Editar Plan de Estudios{% else %}Configura lo que Estudias{% endif %}</h3>
+        <p class="text-muted small">Personaliza la titulación, años lectivos y el porcentaje de faltas permitido</p>
+    </div>
+
+    <form method="post" action="{{ url_for('setup_estudio') }}">
+        <!-- TITULACIÓN / ESTUDIO -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">1. ¿Qué estás estudiando?</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-university text-muted"></i></span>
+                <input type="text" name="nombre" class="form-control" placeholder="Ej: Desarrollo de Aplicaciones Multiplataforma (DAM)" value="{{ estudio.nombre if estudio else '' }}" required>
+            </div>
+            <small class="text-muted">Nombre del ciclo formativo, grado universitario, máster o curso.</small>
+        </div>
+
+        <!-- DURACIÓN EN AÑOS -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">2. ¿Cuántos años / cursos dura este estudio?</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-calendar-alt text-muted"></i></span>
+                <select name="duracion_anos" class="form-select" required>
+                    {% for n in range(1, 7) %}
+                        <option value="{{ n }}" {% if estudio and estudio.duracion_anos == n %}selected{% elif not estudio and n == 2 %}selected{% endif %}>
+                            {{ n }} {% if n == 1 %}Año / Curso{% else %}Años / Cursos{% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <small class="text-muted">Se generará una pestaña o sección para organizar las asignaturas de cada año.</small>
+        </div>
+
+        <!-- PORCENTAJE DE CÁLCULO DE FALTAS -->
+        <div class="mb-4">
+            <label class="form-label fw-semibold">3. ¿Qué porcentaje límite de faltas aplica? (%)</label>
+            <div class="input-group">
+                <span class="input-group-text bg-light"><i class="fas fa-percentage text-muted"></i></span>
+                <input type="number" step="0.5" min="1" max="100" name="porcentaje_calculo" class="form-control" value="{{ estudio.porcentaje_calculo if estudio else 25.0 }}" required>
+                <span class="input-group-text bg-light">%</span>
+            </div>
+            <small class="text-muted">Por normativa de FP / Universidad, suele ser el <strong>25%</strong> (o el 15%/20% según el centro docente). El límite de faltas de cada asignatura se calculará automáticamente con este valor.</small>
+        </div>
+
+        <div class="d-flex gap-3 justify-content-end">
+            {% if estudio %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary px-4 rounded-pill">Cancelar</a>
+            {% endif %}
+            <button type="submit" class="btn btn-primary px-4 rounded-pill fw-bold">
+                <i class="fas fa-save me-1"></i> Guardar y Continuar
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,2 +1,7 @@
 .vscode
-web/__pycache__
+.env
+.*
+client_secret*.json
+*.pyc
+__pycache__/
+web/__pycache__/

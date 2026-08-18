@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Política de Cookies{% endblock %}
+
+{% block content %}
+<div class="container pb-5">
+    <div class="card card-stat p-4 p-md-5">
+        <div class="mb-4 pb-3 border-bottom">
+            <span class="badge bg-warning text-dark px-3 py-1 rounded-pill mb-2">Directiva ePrivacy & LSSI-CE</span>
+            <h1 class="fw-bold text-dark">Política de Cookies</h1>
+            <p class="text-muted small mb-0">Información sobre el uso de cookies y almacenamiento local</p>
+        </div>
+
+        <div class="legal-content lh-lg text-secondary">
+            <h4 class="fw-bold text-dark mt-4">1. ¿Qué son las Cookies?</h4>
+            <p>
+                Una cookie es un pequeño fichero de texto que un sitio web almacena en el navegador del usuario al acceder al mismo. Permite al servidor recordar información sobre su visita, como su sesión activa o sus preferencias de navegación, facilitando su próximo acceso y haciendo que la aplicación resulte más útil y personalizada.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">2. Cookies Utilizadas en esta Aplicación</h4>
+            <p>
+                Nuestra aplicación utiliza exclusivamente <strong>cookies técnicas y estrictamente necesarias</strong> para el correcto funcionamiento del sistema y la autenticación segura:
+            </p>
+
+            <div class="table-responsive my-3">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre de la Cookie</th>
+                            <th>Tipo / Origen</th>
+                            <th>Finalidad</th>
+                            <th>Duración</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>session</code></td>
+                            <td>Propia / Técnica</td>
+                            <td>Mantiene la sesión de usuario autenticado de forma cifrada en el servidor (Flask Session).</td>
+                            <td>Sesión (se borra al cerrar el navegador o hacer logout)</td>
+                        </tr>
+                        <tr>
+                            <td><code>g_state</code> / <code>G_ENABLED_IDPS</code></td>
+                            <td>Terceros (Google LLC)</td>
+                            <td>Gestiona el estado del componente de inicio de sesión con Google Identity Services (Google OAuth).</td>
+                            <td>Persistente / Sesión</td>
+                        </tr>
+                        <tr>
+                            <td><code>cookies_consent</code> (LocalStorage)</td>
+                            <td>Propia / Preferencia</td>
+                            <td>Almacena el consentimiento del usuario tras interactuar con el banner inicial de cookies.</td>
+                            <td>Persistente (1 año)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-success border-0 rounded-3 p-3 text-dark">
+                <i class="fas fa-check-shield me-2 text-success"></i> <strong>Sin cookies de rastreo publicitario:</strong>
+                Esta plataforma <strong>NO</strong> utiliza cookies de publicidad comportamental, ni píxeles de remarketing de terceros ni herramientas invasivas de tracking entre sitios.
+            </div>
+
+            <h4 class="fw-bold text-dark mt-4">3. Consentimiento y Banner de Cookies</h4>
+            <p>
+                Al acceder por primera vez a la aplicación, se muestra un banner informativo sobre el uso de cookies técnicas y de sesión. El usuario puede pulsar en "Aceptar todas" o "Solo técnicas" para registrar su preferencia en el almacenamiento local del navegador y ocultar el aviso.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">4. Cómo Desactivar o Eliminar Cookies en tu Navegador</h4>
+            <p>
+                Puedes permitir, bloquear o eliminar las cookies instaladas en tu equipo mediante la configuración de las opciones de tu navegador web:
+            </p>
+            <ul>
+                <li><strong>Google Chrome:</strong> Configuración &rarr; Privacidad y seguridad &rarr; Cookies y otros datos de sitios.</li>
+                <li><strong>Mozilla Firefox:</strong> Ajustes &rarr; Privacidad & Seguridad &rarr; Cookies y datos del sitio.</li>
+                <li><strong>Safari (Apple):</strong> Preferencias &rarr; Privacidad &rarr; Bloquear todas las cookies.</li>
+                <li><strong>Microsoft Edge:</strong> Configuración &rarr; Cookies y permisos del sitio &rarr; Cookies y datos guardados.</li>
+            </ul>
+            <p>
+                <em>Ten en cuenta que si deshabilitas o eliminas las cookies técnicas de sesión, no podrás mantener iniciada la sesión ni acceder al dashboard de gestión de faltas.</em>
+            </p>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+            <a href="{{ url_for('login') }}" class="btn btn-primary rounded-pill px-4">Volver al Acceso</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

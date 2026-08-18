@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de Usuario: {{ target_user.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container pb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill mb-2">
+                <i class="fas fa-arrow-left me-1"></i> Volver al Panel Admin
+            </a>
+            <h2 class="fw-bold mb-0">Ficha de Usuario: {{ target_user.nombre }}</h2>
+            <p class="text-muted small mb-0">{{ target_user.email }} &bull; Rol: <strong>{{ target_user.rol|capitalize }}</strong> &bull; Registrado el: {{ target_user.creado_en.strftime('%d/%m/%Y %H:%M') }}</p>
+        </div>
+    </div>
+
+    {% set estudio = target_user.estudio_activo %}
+    {% if not estudio %}
+        <div class="alert alert-info rounded-3 p-4">
+            <i class="fas fa-info-circle me-2"></i> Este usuario aún no ha configurado ningún plan de estudio.
+        </div>
+    {% else %}
+        <div class="card card-stat p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">Plan Activo</span>
+                    <h3 class="fw-bold mb-1">{{ estudio.nombre }}</h3>
+                    <p class="text-muted mb-0">
+                        Duración: <strong>{{ estudio.duracion_anos }} años</strong> &bull; 
+                        Porcentaje Límite: <strong>{{ estudio.porcentaje_calculo }}%</strong> &bull; 
+                        Total Módulos: <strong>{{ estudio.asignaturas|length }}</strong>
+                    </p>
+                </div>
+                <div class="text-end">
+                    <div class="fs-4 fw-bold text-danger">{{ estudio.total_horas_llevo }}h</div>
+                    <small class="text-muted">Faltas acumuladas / {{ "%.0f"|format(estudio.total_horas_limite) }}h límite</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASIGNATURAS POR AÑO -->
+        {% for curso_num in range(1, estudio.duracion_anos + 1) %}
+            {% set asignaturas_curso = estudio.asignaturas | selectattr("curso", "equalto", curso_num) | list %}
+            <div class="table-container mb-4">
+                <h5 class="fw-bold mb-3 text-dark">
+                    <i class="fas fa-bookmark text-primary me-2"></i> {{ curso_num }}º Curso
+                </h5>
+
+                {% if asignaturas_curso|length == 0 %}
+                    <p class="text-muted small mb-0">Sin asignaturas en este curso.</p>
+                {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Asignatura</th>
+                                    <th>Horas Totales</th>
+                                    <th>Porcentaje</th>
+                                    <th>Horas Límite</th>
+                                    <th>Faltas Llevo</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for asig in asignaturas_curso %}
+                                    <tr>
+                                        <td><strong>{{ asig.nombre }}</strong></td>
+                                        <td>{{ asig.horas_totales }}h</td>
+                                        <td>{{ asig.porcentaje_calculo }}%</td>
+                                        <td>{{ "%.1f"|format(asig.horas_limite) }}h</td>
+                                        <td class="fw-bold">{{ asig.horas_llevo }}h</td>
+                                        <td>
+                                            {% if asig.horas_restantes <= 0 %}
+                                                <span class="badge bg-danger">Superado</span>
+                                            {% elif asig.horas_restantes < 5 %}
+                                                <span class="badge bg-warning text-dark">Riesgo ({{ asig.horas_restantes }}h)</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Correcto</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

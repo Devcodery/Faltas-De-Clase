@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Términos y Condiciones de Uso{% endblock %}
+
+{% block content %}
+<div class="container pb-5">
+    <div class="card card-stat p-4 p-md-5">
+        <div class="mb-4 pb-3 border-bottom">
+            <span class="badge bg-secondary px-3 py-1 rounded-pill mb-2">Condiciones Generales</span>
+            <h1 class="fw-bold text-dark">Términos y Condiciones de Uso</h1>
+            <p class="text-muted small mb-0">Última actualización: {{ current_year }}</p>
+        </div>
+
+        <div class="legal-content lh-lg text-secondary">
+            <h4 class="fw-bold text-dark mt-4">1. Objeto y Ámbito de Aplicación</h4>
+            <p>
+                Los presentes Términos y Condiciones regulan el acceso, navegación y uso de la aplicación web <strong>Control de Faltas de Clase</strong>. Al registrarse, iniciar sesión (incluyendo mediante Google OAuth) o utilizar cualquiera de las herramientas disponibles, el usuario acepta de forma expresa y sin reservas las cláusulas aquí estipuladas.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">2. Descargo de Responsabilidad sobre la Exactitud de los Horarios (Disclaimer)</h4>
+            <div class="alert alert-warning border-0 rounded-3 p-3 text-dark">
+                <i class="fas fa-exclamation-triangle me-2 text-danger"></i> <strong>Exención de Responsabilidad Académica:</strong>
+                La presente aplicación es una herramienta informática orientada exclusivamente al <strong>autocontrol, estimación y organización personal</strong> del alumnado. 
+                <ul class="mt-2 mb-1">
+                    <li>El cómputo de horas totales, los porcentajes de cálculo aplicables (por ejemplo, el 15%, 20% o 25%) y el registro diario de faltas son configurados y gestionados bajo la <strong>entera responsabilidad del usuario</strong>.</li>
+                    <li>El titular de la aplicación no garantiza la coincidencia entre los cálculos efectuados en la plataforma y los registros oficiales de asistencia gestionados por la secretaría o jefatura de estudios de su centro docente (instituto, universidad o centro de formación profesional).</li>
+                    <li>En ningún caso la aplicación sustituye a las resoluciones, expedientes o comunicaciones oficiales de los centros educativos. El usuario debe cotejar siempre su situación oficial con su tutor o centro.</li>
+                </ul>
+            </div>
+
+            <h4 class="fw-bold text-dark mt-4">3. Normas de Comportamiento y Uso de la Plataforma</h4>
+            <p>El usuario se compromete a hacer un uso lícito, diligente y de buena fe de la plataforma. Queda expresamente prohibido:</p>
+            <ul>
+                <li>Introducir contenidos ilícitos, lesivos, ofensivos o que vulneren derechos de propiedad intelectual de terceros.</li>
+                <li>Utilizar mecanismos automatizados, bots, scrapers o scripts que sobrecarguen o vulneren la seguridad del servidor.</li>
+                <li>Intentar acceder sin autorización a cuentas de otros usuarios, bases de datos o paneles de administración.</li>
+                <li>Suplantar la identidad de otra persona física o jurídica al utilizar el servicio de autenticación.</li>
+            </ul>
+
+            <h4 class="fw-bold text-dark mt-4">4. Cuentas de Usuario y Seguridad</h4>
+            <p>
+                El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso (tanto contraseña local como cuenta de Google vinculada). En caso de sospecha de acceso indebido, deberá comunicarlo de inmediato a los administradores para bloquear la sesión.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">5. Propiedad Intelectual e Industrial</h4>
+            <p>
+                El código fuente, arquitectura de software, diseño de interfaces gráficas, logotipos y elementos distintivos de la aplicación son titularidad de sus desarrolladores o se emplean bajo licencias de software libre correspondientes, quedando protegidos por la legislación española e internacional sobre propiedad intelectual.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">6. Modificación de los Servicios y Términos</h4>
+            <p>
+                El titular se reserva el derecho a modificar, suspender o actualizar en cualquier momento y sin previo aviso la funcionalidad de la aplicación o las condiciones de uso para adaptarse a novedades legislativas o mejoras técnicas.
+            </p>
+
+            <h4 class="fw-bold text-dark mt-4">7. Legislación Aplicable y Jurisdicción</h4>
+            <p>
+                Estos términos se regirán e interpretarán de acuerdo con la legislación del Reino de España y la normativa de la Unión Europea. Para la resolución de cualquier discrepancia o controversia, las partes se someten a los juzgados y tribunales del domicilio del titular o del usuario según determine la normativa de consumo aplicable.
+            </p>
+        </div>
+
+        <div class="mt-4 pt-3 border-top text-end">
+            <a href="{{ url_for('login') }}" class="btn btn-primary rounded-pill px-4">Volver al Acceso</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
