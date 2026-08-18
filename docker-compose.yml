@@ -11,6 +11,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432" # Opcional: solo si quieres conectarte desde DBeaver en tu PC
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d asistencia_db"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
 
   # Contenedor de tu Web + Scraper
   web:
@@ -27,9 +32,11 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./web:/app  # Para que si cambias código, se actualice sin reconstruir
 
 volumes:
   postgres_data:
+

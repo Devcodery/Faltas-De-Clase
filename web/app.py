@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 from functools import wraps
 from datetime import datetime
@@ -75,7 +76,19 @@ ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'admin123')
 ADMIN_NAME = os.getenv('ADMIN_NAME', 'Administrador Sistema')
 
 def init_db_and_admin_user():
-    db.create_all()
+    # Espera activa y reintentos para permitir que PostgreSQL y la red interna inicien
+    max_retries = 10
+    for attempt in range(1, max_retries + 1):
+        try:
+            db.create_all()
+            break
+        except Exception as err:
+            if attempt == max_retries:
+                print(f"❌ Error al conectar con la base de datos tras {max_retries} intentos: {err}")
+                raise err
+            print(f"⏳ Conectando a la base de datos (intento {attempt}/{max_retries})...")
+            time.sleep(2)
+
     if ADMIN_EMAIL and ADMIN_PASSWORD:
         email_clean = ADMIN_EMAIL.strip().lower()
         admin = User.query.filter_by(email=email_clean).first()
