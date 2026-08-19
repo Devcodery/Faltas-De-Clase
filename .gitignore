@@ -1,6 +1,7 @@
 .vscode
 .env
 .*
+web/ads.txt
 client_secret*.json
 *.pyc
 __pycache__/
