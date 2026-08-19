@@ -156,7 +156,7 @@ def index():
         if g.user.is_admin and request.args.get('view') != 'user':
             return redirect(url_for('admin_dashboard'))
         return redirect(url_for('dashboard'))
-    return redirect(url_for('login'))
+    return render_template('index.html')
 
 
 @app.route('/favicon.ico')
