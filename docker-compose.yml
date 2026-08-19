@@ -31,6 +31,8 @@ services:
       - ADMIN_NAME=${ADMIN_NAME}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - ADSENSE_CLIENT_ID=${ADSENSE_CLIENT_ID}
+      - ADSENSE_ENABLED=${ADSENSE_ENABLED}
     depends_on:
       db:
         condition: service_healthy

@@ -103,6 +103,10 @@ ADMIN_NAME=Administrador Sistema
 # Opcional para Google Sign-In (OAuth 2.0)
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+
+# Opcional para Google AdSense (Publicidad & Monetización)
+ADSENSE_CLIENT_ID=ca-pub-XXXXXXXXXXXXXXXX
+ADSENSE_ENABLED=true
 ```
 
 ### 2. Arrancar Contenedores

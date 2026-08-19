@@ -1,0 +1,38 @@
+{% macro render_ad(slot_id="", format="auto", extra_classes="my-4", title="Publicidad") %}
+{% if adsense_enabled %}
+<div class="ad-container text-center {{ extra_classes }}">
+    <div class="d-flex justify-content-between align-items-center mb-1 px-2">
+        <span class="ad-label text-muted text-uppercase" style="font-size: 0.65rem; letter-spacing: 1px;">
+            <i class="fas fa-rectangle-ad me-1"></i> {{ title }}
+        </span>
+        {% if not adsense_client_id %}
+        <span class="badge bg-light text-muted border" style="font-size: 0.65rem;">Modo Demo / Placeholder</span>
+        {% endif %}
+    </div>
+
+    {% if adsense_client_id %}
+        <!-- Google AdSense Unit Real -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ adsense_client_id }}"
+             {% if slot_id %}data-ad-slot="{{ slot_id }}"{% endif %}
+             data-ad-format="{{ format }}"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    {% else %}
+        <!-- Placeholder visual cuando no hay ADSENSE_CLIENT_ID configurado -->
+        <div class="ad-placeholder-card p-3 rounded-4 border border-dashed text-muted d-flex flex-column justify-content-center align-items-center" style="min-height: 90px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="fas fa-bullhorn text-primary opacity-75 fs-5"></i>
+                <span class="fw-semibold text-dark small">Espacio para Anuncio (Google AdSense)</span>
+            </div>
+            <p class="small mb-0 text-secondary" style="font-size: 0.75rem;">
+                Configura <code>ADSENSE_CLIENT_ID=ca-pub-XXXXXXXXXX</code> en tu archivo <code>.env</code> para mostrar anuncios reales en este bloque.
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "components/ad_unit.html" import render_ad %}
 
 {% block title %}Dashboard | {{ estudio.nombre }}{% endblock %}
 
@@ -137,6 +138,9 @@
         </div>
     </div>
 
+    <!-- BLOQUE DE ANUNCIO TOP (DASHBOARD) -->
+    {{ render_ad(format="horizontal", extra_classes="mb-4", title="Publicidad") }}
+
     <!-- SECCIÓN DE ASIGNATURAS ORGANIZADAS POR AÑO / CURSO -->
     {% for curso_num in range(1, estudio.duracion_anos + 1) %}
         {% set asignaturas_curso = asignaturas_por_curso[curso_num] %}
@@ -271,6 +275,9 @@
             {% endif %}
         </div>
     {% endfor %}
+
+    <!-- BLOQUE DE ANUNCIO INFERIOR (DASHBOARD) -->
+    {{ render_ad(format="auto", extra_classes="mt-4 mb-2", title="Espacio Patrocinado") }}
 
 </div>
 

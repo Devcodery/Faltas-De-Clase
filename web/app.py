@@ -3,7 +3,7 @@ import time
 import requests
 from functools import wraps
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify, g, send_from_directory
+from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify, g, send_from_directory, Response
 from dotenv import load_dotenv
 from models import db, User, Estudio, Asignatura
 
@@ -23,6 +23,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Google OAuth Config
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET', '')
+
+# Google AdSense Config
+ADSENSE_CLIENT_ID = os.getenv('ADSENSE_CLIENT_ID', '').strip()
+ADSENSE_ENABLED = os.getenv('ADSENSE_ENABLED', 'true').strip().lower() in ('true', '1', 'yes')
 
 db.init_app(app)
 
@@ -65,6 +69,8 @@ def inject_global_context():
     return {
         'current_user': g.user,
         'google_client_id': GOOGLE_CLIENT_ID,
+        'adsense_client_id': ADSENSE_CLIENT_ID,
+        'adsense_enabled': ADSENSE_ENABLED,
         'admin_email': ADMIN_EMAIL,
         'current_year': datetime.now().year
     }
@@ -131,6 +137,15 @@ def index():
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
+@app.route('/ads.txt')
+def ads_txt():
+    if ADSENSE_CLIENT_ID:
+        pub_id = ADSENSE_CLIENT_ID.replace('ca-', '')
+        content = f"google.com, {pub_id}, DIRECT, f08c47fec0942fa0\n"
+        return Response(content, mimetype='text/plain')
+    return send_from_directory(app.root_path, 'ads.txt', mimetype='text/plain')
 
 
 @app.route('/login', methods=['GET', 'POST'])

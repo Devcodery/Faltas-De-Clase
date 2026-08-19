@@ -14,6 +14,11 @@
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    {% if adsense_enabled and adsense_client_id %}
+    <!-- Google AdSense SDK -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ adsense_client_id }}" crossorigin="anonymous"></script>
+    {% endif %}
+
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
@@ -112,6 +117,23 @@
             box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
             border-top: 2px solid #3b82f6;
             display: none;
+        }
+
+        /* AdSense & Ads Styling */
+        .ad-container {
+            width: 100%;
+            max-width: 970px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ad-placeholder-card {
+            border: 2px dashed #cbd5e1 !important;
+            transition: all 0.2s ease;
+        }
+        .ad-placeholder-card:hover {
+            border-color: #94a3b8 !important;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%) !important;
         }
     </style>
     {% block extra_css %}{% endblock %}
