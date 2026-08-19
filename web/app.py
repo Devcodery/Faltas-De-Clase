@@ -1,5 +1,6 @@
 import os
 import time
+import gzip
 import requests
 from functools import wraps
 from datetime import datetime
@@ -42,6 +43,30 @@ def get_current_user():
 @app.before_request
 def load_logged_in_user():
     g.user = get_current_user()
+
+@app.after_request
+def compress_and_cache(response):
+    # Cabeceras de caché para archivos estáticos
+    if request.path.startswith('/static/') or request.path in ('/favicon.ico', '/ads.txt'):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+    
+    # Compresión gzip para respuestas de texto/html/json
+    accept_encoding = request.headers.get('Accept-Encoding', '')
+    if ('gzip' in accept_encoding.lower() and 
+        200 <= response.status_code < 300 and 
+        'Content-Encoding' not in response.headers and
+        response.mimetype in ('text/html', 'text/css', 'application/javascript', 'application/json', 'text/plain', 'image/svg+xml')):
+        
+        data = response.get_data()
+        if len(data) > 400:
+            response.direct_passthrough = False
+            compressed_data = gzip.compress(data)
+            response.set_data(compressed_data)
+            response.headers['Content-Encoding'] = 'gzip'
+            response.headers['Content-Length'] = len(compressed_data)
+            response.headers['Vary'] = 'Accept-Encoding'
+
+    return response
 
 def login_required(f):
     @wraps(f)

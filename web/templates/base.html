@@ -3,16 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Control de Faltas es la herramienta online diseñada para que los estudiantes de DAM puedan gestionar sus horarios, llevar un registro del porcentaje de ausencias por asignatura y calcular si superan el 25% permitido.">
+    <meta name="theme-color" content="#182848">
+    <meta name="robots" content="index, follow">
+
     <title>{% block title %}Control de Faltas{% endblock %}</title>
+
+    <!-- Preconnect para acelerar descargas de CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts con font-display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 (Carga asíncrona no bloqueante) -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
     <!-- Google Site Verification -->
     <meta name="google-site-verification" content="bYUWTfLl0pYxxU1FZ5lBULKWPgMx1jHGKY8hl3GqLwY" />
@@ -86,24 +102,33 @@
             font-weight: 500;
         }
 
+        /* Accesibilidad y Contraste Mejorado (WCAG AA/AAA) */
+        .text-muted, .text-secondary {
+            color: #4b5563 !important;
+        }
+
         /* Footer */
         .app-footer {
-            background-color: #1a1e24;
-            color: #adb5bd;
-            padding: 30px 0 20px 0;
+            background-color: #0f172a;
+            color: #cbd5e1;
+            padding: 35px 0 25px 0;
             margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255,255,255,0.12);
             font-size: 0.9rem;
         }
 
         .app-footer a {
-            color: #ced4da;
+            color: #f1f5f9;
             text-decoration: none;
             transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 4px;
+            min-height: 44px;
         }
 
         .app-footer a:hover {
-            color: #00d2ff;
+            color: #38bdf8;
             text-decoration: underline;
         }
 
@@ -113,13 +138,20 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #111827;
-            color: #f3f4f6;
-            padding: 16px 24px;
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 18px 24px;
             z-index: 9999;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
-            border-top: 2px solid #3b82f6;
+            box-shadow: 0 -4px 25px rgba(0,0,0,0.4);
+            border-top: 3px solid #0284c7;
             display: none;
+        }
+
+        #cookie-banner .btn {
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* AdSense & Ads Styling */
@@ -147,15 +179,16 @@
     <nav class="navbar navbar-expand-lg navbar-dark {% if current_user and current_user.is_admin %}navbar-admin{% else %}navbar-custom{% endif %} p-3">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='favicon.png') }}" alt="Logo" width="30" height="30" class="me-2 rounded-2">
+                <img src="{{ url_for('static', filename='favicon.png') }}" alt="Logo" width="30" height="30" class="me-2 rounded-2" fetchpriority="high">
                 <span>Control de Faltas</span>
                 {% if current_user and current_user.is_admin %}
                     <span class="badge bg-warning text-dark ms-2 small">ADMIN</span>
                 {% endif %}
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Abrir menú de navegación">
                 <span class="navbar-toggler-icon"></span>
+                <span class="visually-hidden">Abrir menú de navegación</span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarMain">

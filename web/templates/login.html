@@ -99,8 +99,8 @@
                 <div class="col-sm-6">
                     <div class="p-3 bg-white rounded-3 shadow-sm border border-light h-100">
                         <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-calculator text-primary fs-5 me-2"></i>
-                            <h6 class="fw-bold mb-0 text-dark">Límite del 25%</h6>
+                            <i class="fas fa-calculator text-primary fs-5 me-2" aria-hidden="true"></i>
+                            <h2 class="h6 fw-bold mb-0 text-dark">Límite del 25%</h2>
                         </div>
                         <p class="small text-muted mb-0">Cálculo automático de horas máximas de falta por módulo lectivo.</p>
                     </div>
@@ -108,8 +108,8 @@
                 <div class="col-sm-6">
                     <div class="p-3 bg-white rounded-3 shadow-sm border border-light h-100">
                         <div class="d-flex align-items-center mb-2">
-                            <i class="fas fa-traffic-light text-warning fs-5 me-2"></i>
-                            <h6 class="fw-bold mb-0 text-dark">Semáforo de Riesgo</h6>
+                            <i class="fas fa-traffic-light text-warning fs-5 me-2" aria-hidden="true"></i>
+                            <h2 class="h6 fw-bold mb-0 text-dark">Semáforo de Riesgo</h2>
                         </div>
                         <p class="small text-muted mb-0">Alertas visuales preventivas para no perder la evaluación continua.</p>
                     </div>
@@ -117,11 +117,11 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-lg-start justify-content-center gap-3 text-muted small">
-                <span><i class="fas fa-shield-alt text-success me-1"></i> Conforme a RGPD</span>
+                <span><i class="fas fa-shield-alt text-success me-1" aria-hidden="true"></i> Conforme a RGPD</span>
                 <span>&bull;</span>
-                <span><i class="fab fa-google text-primary me-1"></i> Google Sign-In</span>
+                <span><i class="fab fa-google text-primary me-1" aria-hidden="true"></i> Google Sign-In</span>
                 <span>&bull;</span>
-                <span><i class="fas fa-mobile-alt text-info me-1"></i> 100% Móvil</span>
+                <span><i class="fas fa-mobile-alt text-info me-1" aria-hidden="true"></i> 100% Móvil</span>
             </div>
         </div>
 
@@ -130,9 +130,9 @@
             <div class="auth-card mx-auto">
                 <div class="text-center mb-4">
                     <div class="bg-primary bg-opacity-10 text-primary d-inline-flex p-3 rounded-circle mb-3">
-                        <i class="fas fa-user-graduate fa-2x"></i>
+                        <i class="fas fa-user-graduate fa-2x" aria-hidden="true"></i>
                     </div>
-                    <h3 class="fw-bold mb-1">Iniciar Sesión</h3>
+                    <h2 class="h4 fw-bold mb-1">Iniciar Sesión</h2>
                     <p class="text-muted small">Accede a tu panel para gestionar tus faltas</p>
                 </div>
 
@@ -151,8 +151,8 @@
 
                 <!-- BOTÓN GOOGLE OAUTH -->
                 <div class="mb-3">
-                    <button type="button" class="btn btn-google w-100 py-2 rounded-pill shadow-sm dimmed" id="btnGoogleAuth" onclick="handleGoogleLogin()">
-                        <svg width="20" height="20" viewBox="0 0 48 48">
+                    <button type="button" class="btn btn-google w-100 py-2 rounded-pill shadow-sm dimmed" id="btnGoogleAuth" onclick="handleGoogleLogin()" aria-label="Continuar e iniciar sesión con Google">
+                        <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
                             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                             <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                             <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -174,22 +174,22 @@
                     <input type="hidden" name="acepto_terminos" id="hiddenAceptoTerminos" value="0">
 
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold">Correo Electrónico</label>
+                        <label class="form-label small fw-semibold" for="loginEmail">Correo Electrónico</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                            <input type="email" name="email" class="form-control border-start-0" placeholder="tu@email.com" required>
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted" aria-hidden="true"></i></span>
+                            <input type="email" id="loginEmail" name="email" class="form-control border-start-0" placeholder="tu@email.com" autocomplete="email" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-semibold">Contraseña</label>
+                        <label class="form-label small fw-semibold" for="loginPassword">Contraseña</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                            <input type="password" name="password" class="form-control border-start-0" placeholder="••••••••" required>
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted" aria-hidden="true"></i></span>
+                            <input type="password" id="loginPassword" name="password" class="form-control border-start-0" placeholder="••••••••" autocomplete="current-password" required>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm" id="btnSubmitLogin">
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm" id="btnSubmitLogin" style="min-height: 44px;">
                         Entrar
                     </button>
                 </form>
