@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Iniciar Sesión{% endblock %}
+{% block title %}Control de faltas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -82,85 +82,131 @@
 {% endblock %}
 
 {% block content %}
-<div class="auth-wrapper">
-    <div class="auth-card">
-        <div class="text-center mb-4">
-            <div class="bg-primary bg-opacity-10 text-primary d-inline-flex p-3 rounded-circle mb-3">
-                <i class="fas fa-user-graduate fa-2x"></i>
-            </div>
-            <h3 class="fw-bold mb-1">Acceso a Control de Faltas</h3>
-            <p class="text-muted small">Inicia sesión con tu cuenta para gestionar tus asistencias</p>
-        </div>
-
-        <!-- CHECKBOX OBLIGATORIO RGPD -->
-        <div class="mb-4 p-3 bg-light rounded-3 border rgpd-box" id="rgpdContainer">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="aceptoTerminosCheck" onchange="toggleAuthButtons()">
-                <label class="form-check-label small" for="aceptoTerminosCheck" style="cursor: pointer;">
-                    He leído y acepto los <a href="{{ url_for('terminos_condiciones') }}" target="_blank" class="text-primary text-decoration-underline fw-semibold">Términos de Uso</a> y la <a href="{{ url_for('politica_privacidad') }}" target="_blank" class="text-primary text-decoration-underline fw-semibold">Política de Privacidad</a>.
-                </label>
-            </div>
-            <small id="rgpdWarning" class="text-danger small mt-1 d-block" style="font-size: 0.75rem;">
-                * Marca la casilla para habilitar el acceso con Google o contraseña.
-            </small>
-        </div>
-
-        <!-- BOTÓN GOOGLE OAUTH -->
-        <div class="mb-3">
-            <button type="button" class="btn btn-google w-100 py-2 rounded-pill shadow-sm dimmed" id="btnGoogleAuth" onclick="handleGoogleLogin()">
-                <svg width="20" height="20" viewBox="0 0 48 48">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                </svg>
-                <span id="btnGoogleText">Continuar con Google</span>
-            </button>
-            
-            <!-- Contenedor para botón nativo renderizado por Google -->
-            <div id="google-auth-container" class="mt-2"></div>
-        </div>
-
-        <div class="divider">
-            <span>o con correo y contraseña</span>
-        </div>
-
-        <!-- FORMULARIO TRADICIONAL -->
-        <form method="post" action="{{ url_for('login') }}" id="loginForm" onsubmit="return validateForm()">
-            <input type="hidden" name="acepto_terminos" id="hiddenAceptoTerminos" value="0">
-
-            <div class="mb-3">
-                <label class="form-label small fw-semibold">Correo Electrónico</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
-                    <input type="email" name="email" class="form-control border-start-0" placeholder="tu@email.com" required>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label small fw-semibold">Contraseña</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
-                    <input type="password" name="password" class="form-control border-start-0" placeholder="••••••••" required>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm" id="btnSubmitLogin">
-                Entrar
-            </button>
-        </form>
-
-        <div class="mt-4 text-center">
-            <p class="small text-muted mb-0">
-                ¿Aún no tienes cuenta? 
-                <a href="{{ url_for('register') }}" class="text-primary fw-semibold text-decoration-none">Regístrate aquí</a>
+<div class="container py-4">
+    <div class="row align-items-center justify-content-center g-5 min-vh-75 my-auto">
+        
+        <!-- COLUMNA INFORMATIVA / LANDING HERO -->
+        <div class="col-lg-6 col-md-10 text-lg-start text-center">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold mb-3">
+                <i class="fas fa-graduation-cap me-1"></i> Asistencia & Ausencias DAM
+            </span>
+            <h1 class="display-5 fw-bold text-dark mb-3">Control de faltas</h1>
+            <p class="lead text-secondary mb-4 lh-base">
+                <strong>Control de faltas</strong> es una herramienta diseñada para que los estudiantes de DAM puedan gestionar sus horarios, llevar un registro del porcentaje de ausencias por asignatura y calcular si superan el 25% permitido.
             </p>
+
+            <div class="row g-3 text-start mb-4">
+                <div class="col-sm-6">
+                    <div class="p-3 bg-white rounded-3 shadow-sm border border-light h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-calculator text-primary fs-5 me-2"></i>
+                            <h6 class="fw-bold mb-0 text-dark">Límite del 25%</h6>
+                        </div>
+                        <p class="small text-muted mb-0">Cálculo automático de horas máximas de falta por módulo lectivo.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="p-3 bg-white rounded-3 shadow-sm border border-light h-100">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-traffic-light text-warning fs-5 me-2"></i>
+                            <h6 class="fw-bold mb-0 text-dark">Semáforo de Riesgo</h6>
+                        </div>
+                        <p class="small text-muted mb-0">Alertas visuales preventivas para no perder la evaluación continua.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-lg-start justify-content-center gap-3 text-muted small">
+                <span><i class="fas fa-shield-alt text-success me-1"></i> Conforme a RGPD</span>
+                <span>&bull;</span>
+                <span><i class="fab fa-google text-primary me-1"></i> Google Sign-In</span>
+                <span>&bull;</span>
+                <span><i class="fas fa-mobile-alt text-info me-1"></i> 100% Móvil</span>
+            </div>
         </div>
 
-        <!-- ACCESO ADMIN CONFIGURADO EN .ENV -->
-        <div class="mt-4 pt-3 border-top text-center">
-            <p class="text-muted small mb-1"><strong>Cuenta Administrador (Configurada en .env):</strong></p>
-            <span class="badge bg-light text-dark border small"><i class="fas fa-shield-alt text-primary me-1"></i> {{ admin_email }}</span>
+        <!-- COLUMNA DE ACCESO / LOGIN CARD -->
+        <div class="col-lg-5 col-md-8">
+            <div class="auth-card mx-auto">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary d-inline-flex p-3 rounded-circle mb-3">
+                        <i class="fas fa-user-graduate fa-2x"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">Iniciar Sesión</h3>
+                    <p class="text-muted small">Accede a tu panel para gestionar tus faltas</p>
+                </div>
+
+                <!-- CHECKBOX OBLIGATORIO RGPD -->
+                <div class="mb-4 p-3 bg-light rounded-3 border rgpd-box" id="rgpdContainer">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="aceptoTerminosCheck" onchange="toggleAuthButtons()">
+                        <label class="form-check-label small" for="aceptoTerminosCheck" style="cursor: pointer;">
+                            He leído y acepto los <a href="{{ url_for('terminos_condiciones') }}" target="_blank" class="text-primary text-decoration-underline fw-semibold">Términos de Uso</a> y la <a href="{{ url_for('politica_privacidad') }}" target="_blank" class="text-primary text-decoration-underline fw-semibold">Política de Privacidad</a>.
+                        </label>
+                    </div>
+                    <small id="rgpdWarning" class="text-danger small mt-1 d-block" style="font-size: 0.75rem;">
+                        * Marca la casilla para habilitar el acceso con Google o contraseña.
+                    </small>
+                </div>
+
+                <!-- BOTÓN GOOGLE OAUTH -->
+                <div class="mb-3">
+                    <button type="button" class="btn btn-google w-100 py-2 rounded-pill shadow-sm dimmed" id="btnGoogleAuth" onclick="handleGoogleLogin()">
+                        <svg width="20" height="20" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <span id="btnGoogleText">Continuar con Google</span>
+                    </button>
+                    
+                    <!-- Contenedor para botón nativo renderizado por Google -->
+                    <div id="google-auth-container" class="mt-2"></div>
+                </div>
+
+                <div class="divider">
+                    <span>o con correo y contraseña</span>
+                </div>
+
+                <!-- FORMULARIO TRADICIONAL -->
+                <form method="post" action="{{ url_for('login') }}" id="loginForm" onsubmit="return validateForm()">
+                    <input type="hidden" name="acepto_terminos" id="hiddenAceptoTerminos" value="0">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-muted"></i></span>
+                            <input type="email" name="email" class="form-control border-start-0" placeholder="tu@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-muted"></i></span>
+                            <input type="password" name="password" class="form-control border-start-0" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm" id="btnSubmitLogin">
+                        Entrar
+                    </button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p class="small text-muted mb-0">
+                        ¿Aún no tienes cuenta? 
+                        <a href="{{ url_for('register') }}" class="text-primary fw-semibold text-decoration-none">Regístrate aquí</a>
+                    </p>
+                </div>
+
+                <!-- ACCESO ADMIN CONFIGURADO EN .ENV -->
+                <div class="mt-4 pt-3 border-top text-center">
+                    <p class="text-muted small mb-1"><strong>Cuenta Administrador (Configurada en .env):</strong></p>
+                    <span class="badge bg-light text-dark border small"><i class="fas fa-shield-alt text-primary me-1"></i> {{ admin_email }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
