@@ -7,11 +7,13 @@ from datetime import datetime
 from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify, g, send_from_directory, Response
 from dotenv import load_dotenv
 from models import db, User, Estudio, Asignatura
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'faltas-super-secret-key-change-in-prod-2026')
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Configuración DB
 uri = os.getenv('DATABASE_URL')
