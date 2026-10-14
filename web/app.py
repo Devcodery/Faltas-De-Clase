@@ -13,7 +13,14 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'faltas-super-secret-key-change-in-prod-2026')
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+# ProxyFix: Imprescindible cuando la app se ejecuta detrás de un Reverse Proxy (como Caddy o Nginx).
+# Por defecto, Flask y WSGI solo ven la conexión TCP directa (la IP local del intermediario: 192.168.1.4).
+# Con ProxyFix se le indica a Werkzeug cuántos niveles de proxies de confianza existen:
+# - x_for=1: Lee la cabecera 'X-Forwarded-For' y asigna a 'request.remote_addr' la IP pública real del cliente.
+# - x_proto=1: Detecta si la petición original del cliente vino por HTTPS ('X-Forwarded-Proto').
+# - x_host=1: Detecta el dominio real solicitado ('X-Forwarded-Host').
+# - x_prefix=1: Respeta prefijos de ruta si los hay ('X-Forwarded-Prefix').
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # Configuración DB
 uri = os.getenv('DATABASE_URL')
@@ -203,11 +210,13 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(password):
             session['user_id'] = user.id
+            print(f"[AUTH LOGIN] Sesión iniciada: {user.email} desde IP: {request.remote_addr}")
             flash(f'¡Bienvenido de nuevo, {user.nombre}!', 'success')
             if user.is_admin:
                 return redirect(url_for('admin_dashboard'))
             return redirect(url_for('dashboard'))
         else:
+            print(f"[AUTH FAILED] Login fallido para '{email}' desde IP: {request.remote_addr}")
             flash('Correo electrónico o contraseña incorrectos.', 'danger')
 
     return render_template('login.html')
@@ -336,6 +345,7 @@ def login_google():
             user.avatar_url = avatar_url
         db.session.commit()
         session['user_id'] = user.id
+        print(f"[AUTH GOOGLE] Sesión iniciada con Google: {user.email} desde IP: {request.remote_addr}")
         flash(f'¡Bienvenido de nuevo, {user.nombre}!', 'success')
         target_url = url_for('admin_dashboard') if user.is_admin else url_for('dashboard')
 
