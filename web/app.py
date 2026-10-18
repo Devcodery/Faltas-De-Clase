@@ -662,6 +662,8 @@ if __name__ == '__main__':
             'workers': int(os.getenv('WEB_CONCURRENCY', 2)),
             'accesslog': '-',
             'errorlog': '-',
+            'capture_output': True,
+            'enable_stdio_inheritance': True,
         }
         print(f"🚀 Iniciando servidor WSGI de producción (Gunicorn) en http://0.0.0.0:{port}")
         StandaloneApplication(app, options).run()

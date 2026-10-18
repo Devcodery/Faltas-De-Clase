@@ -33,6 +33,7 @@ services:
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - ADSENSE_CLIENT_ID=${ADSENSE_CLIENT_ID}
       - ADSENSE_ENABLED=${ADSENSE_ENABLED}
+      - PYTHONUNBUFFERED=1
     depends_on:
       db:
         condition: service_healthy
