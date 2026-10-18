@@ -20,5 +20,5 @@ COPY . .
 # Exponemos el puerto
 EXPOSE 5000
 
-# Ejecutamos la app
-CMD ["python", "app.py"]
+# Ejecutamos la app con Gunicorn (servidor WSGI de producción)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]

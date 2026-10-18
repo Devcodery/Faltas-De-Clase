@@ -95,7 +95,7 @@ DB_USER=admin
 DB_PASS=secreto123
 SECRET_KEY=clave_secreta_super_segura
 
-# Credenciales de Administrador (Creado/sincronizado automáticamente al arrancar)
+# Credenciales del Administrador Inicial (creado solo si no hay ningún admin en la base de datos)
 ADMIN_EMAIL=admin@faltas.local
 ADMIN_PASSWORD=admin123
 ADMIN_NAME=Administrador Sistema
@@ -112,10 +112,9 @@ ADSENSE_ENABLED=true
 ### 2. Arrancar Contenedores
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 
-🎉 **¡Listo!** El sistema crea y sincroniza automáticamente la cuenta del Administrador al iniciar el contenedor. Ya no hace falta ejecutar ningún script de seed manual. Puedes modificar el correo o contraseña del administrador directamente desde el `.env`.
-
-* **👑 Acceso Administrador:** El configurado en `ADMIN_EMAIL` y `ADMIN_PASSWORD` (ej: `admin@faltas.local` / `admin123`).
+🎉 **¡Listo!** El sistema se ejecuta con el servidor WSGI de producción **Gunicorn** (con soporte multi-proceso y ProxyFix para Caddy/Nginx).
+* **👑 Administrador Inicial:** Si la base de datos no contiene ningún administrador registrado, el sistema creará automáticamente el usuario administrador inicial utilizando las credenciales de `ADMIN_EMAIL` y `ADMIN_PASSWORD`. Si ya existe algún administrador, no se creará ni sobrescribirá ninguna cuenta al reiniciar.
 * **🎓 Alumnos:** Se registran desde la propia web (`/register` o con Google) y configuran en 1 minuto su plan de estudios y porcentaje de faltas.

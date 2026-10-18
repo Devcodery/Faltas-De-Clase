@@ -129,28 +129,44 @@ def init_db_and_admin_user():
             print(f"⏳ Conectando a la base de datos (intento {attempt}/{max_retries})...")
             time.sleep(2)
 
-    if ADMIN_EMAIL and ADMIN_PASSWORD:
-        email_clean = ADMIN_EMAIL.strip().lower()
-        admin = User.query.filter_by(email=email_clean).first()
-        if not admin:
-            admin = User(
-                email=email_clean,
-                nombre=ADMIN_NAME.strip() if ADMIN_NAME else "Administrador",
-                rol='admin',
-                acepto_terminos=True
-            )
-            admin.set_password(ADMIN_PASSWORD)
-            db.session.add(admin)
-            db.session.commit()
-            print(f"👑 Usuario Administrador creado automáticamente desde .env: {admin.email}")
+    try:
+        # Solo crear el administrador inicial si no existe NINGÚN administrador en la base de datos
+        admin_exists = User.query.filter_by(rol='admin').first()
+        if not admin_exists:
+            if ADMIN_EMAIL and ADMIN_PASSWORD:
+                email_clean = ADMIN_EMAIL.strip().lower()
+                existing_user = User.query.filter_by(email=email_clean).first()
+                if existing_user:
+                    existing_user.rol = 'admin'
+                    print(f"👑 Usuario existente promovido a administrador inicial: {existing_user.email}")
+                else:
+                    admin = User(
+                        email=email_clean,
+                        nombre=ADMIN_NAME.strip() if ADMIN_NAME else "Administrador",
+                        rol='admin',
+                        acepto_terminos=True
+                    )
+                    admin.set_password(ADMIN_PASSWORD)
+                    db.session.add(admin)
+                    print(f"👑 Usuario Administrador inicial creado: {admin.email}")
+                db.session.commit()
+            else:
+                print("⚠️ No hay administradores registrados y no se definieron credenciales en variables de entorno.")
         else:
-            # Mantener sincronizado el rol y credencial desde .env
-            admin.rol = 'admin'
-            if ADMIN_NAME:
-                admin.nombre = ADMIN_NAME.strip()
-            admin.set_password(ADMIN_PASSWORD)
-            db.session.commit()
-            print(f"✔ Usuario Administrador sincronizado desde .env: {admin.email}")
+            print(f"✔ Administrador existente detectado en la base de datos ({admin_exists.email}). No se crea admin local.")
+    except Exception as err:
+        db.session.rollback()
+        admin_check = User.query.filter_by(rol='admin').first()
+        if admin_check:
+            print(f"✔ Administrador verificado en la base de datos ({admin_check.email}).")
+        else:
+            print(f"⚠️ Error al inicializar usuario administrador: {err}")
+    finally:
+        try:
+            db.session.remove()
+            db.engine.dispose()
+        except Exception:
+            pass
 
 # --- INICIALIZACIÓN AUTOMÁTICA AL ARRANCAR ---
 with app.app_context():
@@ -622,4 +638,33 @@ def politica_cookies():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    port = int(os.getenv('PORT', 5000))
+    # Si se ejecuta directamente con Python, intentamos usar un servidor WSGI de producción (Gunicorn)
+    try:
+        from gunicorn.app.base import BaseApplication
+
+        class StandaloneApplication(BaseApplication):
+            def __init__(self, application, options=None):
+                self.options = options or {}
+                self.application = application
+                super().__init__()
+
+            def load_config(self):
+                for key, value in self.options.items():
+                    if key in self.cfg.settings and value is not None:
+                        self.cfg.set(key.lower(), value)
+
+            def load(self):
+                return self.application
+
+        options = {
+            'bind': f'0.0.0.0:{port}',
+            'workers': int(os.getenv('WEB_CONCURRENCY', 2)),
+            'accesslog': '-',
+            'errorlog': '-',
+        }
+        print(f"🚀 Iniciando servidor WSGI de producción (Gunicorn) en http://0.0.0.0:{port}")
+        StandaloneApplication(app, options).run()
+    except (ImportError, ModuleNotFoundError, AttributeError):
+        print(f"ℹ️ Servidor WSGI Gunicorn no disponible. Ejecutando servidor Flask en puerto {port}...")
+        app.run(host='0.0.0.0', port=port, debug=False)
